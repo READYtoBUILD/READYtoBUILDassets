@@ -1,0 +1,199 @@
+<section class="wrapper">
+  <style>
+    .wrapper{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#0b1f2a}
+    .table-card{background:#fff;border:1px dotted #d8e2ea;border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04);overflow:hidden}
+    table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
+    col.col-type{width:15%}
+    col.col-materials{width:16%}
+    col.col-u{width:11%}
+    col.col-cpm2{width:11%}
+    col.col-costhome{width:12%}
+    col.col-add{width:12%}
+    col.col-gain{width:8%}
+    col.col-loss{width:8%}
+    col.col-year{width:7%}
+    col.col-total{width:10%}
+    thead th{background:#f7fafc;text-align:left;font-weight:600;padding:10px 12px;border-bottom:1px solid #e7eef4;font-size:13px;line-height:1.2;word-break:break-word}
+    tbody td{padding:10px 12px;vertical-align:top;border-bottom:1px solid #f1f5f9;background:#fff;font-size:13px;line-height:1.35;word-break:break-word;hyphens:auto;white-space:normal}
+    tbody tr:last-child td{background:#b6e3c1;font-weight:700;border-bottom:none}
+    /* stacked materials */
+    .stack{display:block;margin:0;padding:0;list-style:none}
+    .stack li{display:block;border:1px solid #dbe7ef;background:#fbfdff;border-radius:10px;padding:4px 8px;margin:4px 0;font-size:12px;line-height:1.2}
+    .stack li.danger{border-color:#ffd5d5;background:#fff7f7}
+    .emoji{font-size:14px;vertical-align:-1px}
+    .muted{opacity:.8}
+    .u{white-space:normal;word-break:break-word} /* allow wrap in U-value column */
+    a.ref{color:#0b5cab;text-decoration:none;border-bottom:1px dotted #9ec1ff}
+    a.ref:hover{color:#063c7a}
+    .notes{margin:.75rem 0 0;color:#334155;font-size:13px}
+    .footnotes{font-size:13px;line-height:1.4;color:#334155;margin-top:18px}
+    .footnotes ol{padding-left:1.25rem}
+    @media (max-width:900px){
+      thead th,tbody td{padding:8px 9px;font-size:12px}
+      col.col-type{width:18%}
+      col.col-materials{width:20%}
+      col.col-u{width:12%}
+    }
+  </style>
+
+  <h2 style="margin:.2rem 0 .6rem;letter-spacing:.2px">Why Insulation is so expensive in UK Homes?</h2>
+
+  <div class="table-card">
+    <table>
+      <colgroup>
+        <col class="col-type"><col class="col-materials"><col class="col-u"><col class="col-cpm2">
+        <col class="col-costhome"><col class="col-add"><col class="col-gain"><col class="col-loss">
+        <col class="col-year"><col class="col-total">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Material 200&nbsp;mm<br><span class="muted">(stacked)</span></th>
+          <th>U-value (@200mm)</th>
+          <th>Cost per m² (installed)</th>
+          <th>Cost for 94&nbsp;m² home</th>
+          <th>Additional renovation costs</th>
+          <th>Value gain (EPC D→C)</th>
+          <th>Value loss (Hazards & Floor Space) </th>
+          <th>Passive Heating</th>
+          <th>Total cost (incl. value loss)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- ROOF -->
+        <tr>
+          <td>Roof Insulation</td>
+          <td>
+            <ul class="stack">
+              <li>PIR</li>
+              <li>PUR</li>
+              <li>Mineral Wool</li>
+              <li class="danger">PU Spray Foam <span class="emoji">💧</span></li>
+            </ul>
+          </td>
+          <td class="u">~0.20&nbsp;W/m²K <a class="ref" href="#ref17">[17]</a> <a class="ref" href="#ref3">[3]</a></td>
+          <td>£40/m² <a class="ref" href="#ref3">[3]</a> <a class="ref" href="#ref32">[32]</a></td>
+          <td>£3,760 <a class="ref" href="#ref1">[1]</a></td>
+          <td>£600 <a class="ref" href="#ref3">[3]</a></td>
+          <td>£0 <a class="ref" href="#ref29">[29]</a></td>
+          <td><a class="ref" href="#ref0">£68,249</a> <span class="emoji">💧</span></td>
+          <td>No</td>
+          <td>
+            £4,360 <a class="ref" href="#ref1">[1]</a><br>
+            <span class="muted">If Spray Foam:</span> <a class="ref" href="#ref27">Up to £72,609</a>
+          </td>
+        </tr>
+
+        <!-- FLOOR -->
+        <tr>
+          <td>Suspended Timber Floor Insulation</td>
+          <td>
+            <ul class="stack">
+              <li>EPS</li>
+              <li>PIR</li>
+              <li class="danger">PU Spray Foam <span class="emoji">💦</span></li>
+            </ul>
+          </td>
+          <td class="u">~0.20–0.28&nbsp;W/m²K <a class="ref" href="#ref20">[20]</a></td>
+          <td>£105/m² <a class="ref" href="#ref4">[4]</a></td>
+          <td>£9,870 <a class="ref" href="#ref1">[1]</a></td>
+          <td>£5,000 <a class="ref" href="#ref4">[4]</a></td>
+          <td>£0 <a class="ref" href="#ref29">[29]</a></td>
+          <td><a class="ref" href="#ref0">£68,249</a> <span class="emoji">💦</span></td>
+          <td>No</td>
+          <td>
+            £14,870 <a class="ref" href="#ref1">[1]</a><br>
+            <span class="muted">If Spray Foam:</span> <a class="ref" href="#ref27">Up to £83,119</a>
+          </td>
+        </tr>
+
+        <!-- EXTERNAL WALL -->
+        <tr>
+          <td>External Wall Insulation</td>
+          <td>
+            <ul class="stack">
+              <li>EPS <span class="emoji">🌧️</span></li>
+              <li class="danger">ACM PIR <span class="emoji">🔥</span></li>
+            </ul>
+          </td>
+          <td class="u">~0.16–0.22&nbsp;W/m²K <a class="ref" href="#ref9">[9]</a> <a class="ref" href="#ref20">[20]</a></td>
+          <td>£350/m² <a class="ref" href="#ref5">[5]</a></td>
+          <td>£32,900 <a class="ref" href="#ref1">[1]</a></td>
+          <td>£3,000 <a class="ref" href="#ref9">[9]</a></td>
+          <td>£0 <a class="ref" href="#ref29">[29]</a></td>
+          <td><a class="ref" href="#ref28">£23,234</a> <span class="emoji">🌧️</span></td>
+          <td>No</td>
+          <td><a class="ref" href="#ref28">Up to £59,134</a></td>
+        </tr>
+
+        <!-- INTERNAL WALL -->
+        <tr>
+          <td>Internal Wall Insulation</td>
+          <td>
+            <ul class="stack">
+              <li>EPS <span class="emoji">🧯</span></li>
+              <li>PIR</li>
+              <li>PUR</li>
+            </ul>
+          </td>
+          <td class="u">~0.18–0.24&nbsp;W/m²K <a class="ref" href="#ref9">[9]</a></td>
+          <td>£100/m² <a class="ref" href="#ref15">[15]</a></td>
+          <td>£9,400 <a class="ref" href="#ref1">[1]</a></td>
+          <td>£3,000 <a class="ref" href="#ref9">[9]</a></td>
+          <td>£0
+          <td>£5,500 (1.9m2 internal area lost @(/av (£) value/av (m2) area) <a class="ref" href="#ref29">[29]</a></td></td>
+          <td>No</td>
+          <td>£17,900</td>
+        </tr>
+
+        <!-- WET ROOM -->
+        <tr>
+          <td>Wet Room Install</td>
+          <td>
+            <ul class="stack">
+              <li>XPS — waterproof, mould-resistant 💧🛡️ <a class="ref" href="#ref22">[22]</a></li>
+            </ul>
+          </td>
+          <td class="u">0.24&nbsp;W/m²K <a class="ref" href="#ref22">[22]</a></td>
+          <td>£100/m² <a class="ref" href="#ref33">[33]</a></td>
+          <td class="muted">— (per room)</td>
+          <td>Included in bathroom refit</td>
+          <td>£0</td>
+          <td>N/A</td>
+          <td>No</td>
+          <td>£10,000 <a class="ref" href="#ref34">[34]</a> <a class="ref" href="#ref35">[35]</a></td>
+        </tr>
+
+        <!-- SUPER ROW -->
+        <tr>
+          <td><a href="https://theigloo.co.uk" target="_blank" rel="noopener">The Igloo Patented &amp; Accredited System (SUPER)</a> 🧊🏡✨</td>
+          <td>
+            <ul class="stack">
+              <li>XPS — waterproof without damp &amp; mould 💧🛡️</li>
+              <li>PIR — Fire-safe design (no ACM cladding) 🛡️🔥</li>
+            </ul>
+          </td>
+          <td class="u">0.14&nbsp;W/m²K <a class="ref" href="#ref26">[26]</a></td>
+          <td>£750/m² <a class="ref" href="#ref26">[26]</a></td>
+          <td>— (applies to chosen area)</td>
+          <td>£0</td>
+          <td><span class="muted">£27,000 @ 10m2 </span></td>
+          <td>£0</td>
+          <td>Yes</td>
+          <td>£7,500 @ 10m2 <a class="ref" href="#ref26">[26]</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="notes">
+    <strong>Risk Keys</strong><br>
+    🌧️ Installing EPS externally to masonry or brickwork has been shown to cause damp and mould when detailing or workmanship is poor; quality oversight reports confirm widespread remediation needs in EWI schemes. <a class="ref" href="#ref7">[7]</a> <a class="ref" href="#ref14">[14]</a><br>
+    💧/💦 When using Spray Foam (roofs/floors): many lenders refuse mortgages on homes with spray foam; properties can become difficult to sell and may suffer valuation discounts. <a class="ref" href="#ref9">[9]</a> <a class="ref" href="#ref16">[16]</a> <a class="ref" href="#ref36">[36]</a><br>
+    🔥 ACM cladding with combustible cores is banned on relevant buildings post-Grenfell; do not use ACM to over-clad insulation where regulations prohibit it. <a class="ref" href="#ref6">[6]</a> <a class="ref" href="#ref13">[13]</a><br>
+    🧯 Internal foam insulations must meet Approved Document B reaction-to-fire/lining rules and be properly protected (e.g., plasterboard) to remain insurable and compliant. <a class="ref" href="#ref30">[30]</a> <a class="ref" href="#ref31">[31]</a>
+  </div>
+
+  <div class="footnotes">
+  </div>
+</section>
