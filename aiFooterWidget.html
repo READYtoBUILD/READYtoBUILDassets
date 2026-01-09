@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Workflow Buttons</title>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --blue:#0052CC;
+    --grey:#777;
+    --border:#ccc;
+  }
+
+  html, body{
+    margin:0;
+    padding:0;
+    background:transparent;
+    font-family:'Lato', sans-serif;
+  }
+
+  .strip{
+    max-width:1200px;
+    margin:8px auto;
+    padding:0 8px;
+  }
+
+  .row{
+    display:flex;
+    gap:6px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    flex:1 1 56px;
+    min-width:56px;
+    height:32px;                 /* smaller */
+    border:2px dotted var(--border);
+    border-radius:12px;
+    background:#fff;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    transition:border-color .12s ease, transform .12s ease;
+    color:#111;
+  }
+
+  .btn:hover{
+    border-color:var(--blue);
+    transform:translateY(-1px);
+  }
+
+  .emoji{
+    font-size:16px;              /* smaller */
+    line-height:1;
+  }
+
+  .hint{
+    position:absolute;
+    left:50%;
+    bottom:-16px;
+    transform:translateX(-50%);
+    font-size:10px;
+    color:var(--grey);
+    opacity:0;
+    transition:opacity .12s ease;
+    white-space:nowrap;
+    pointer-events:none;
+  }
+
+  .btn:hover .hint{ opacity:1; }
+
+  @media (max-width:640px){
+    .btn{ flex:1 1 96px; }
+  }
+</style>
+</head>
+
+<body>
+  <div class="strip">
+    <div class="row">
+      <a class="btn" href="https://google.com" target="_blank" rel="noopener">
+        <span class="emoji">📸➜📷</span><span class="hint">Photo2Photo</span>
+      </a>
+      <a class="btn" href="https://google.com" target="_blank" rel="noopener">
+        <span class="emoji">🖼️➜🖼️</span><span class="hint">Img2Img</span>
+      </a>
+      <a class="btn" href="https://google.com" target="_blank" rel="noopener">
+        <span class="emoji">📸➜🖼️</span><span class="hint">Photo2Img</span>
+      </a>
+      <a class="btn" href="https://google.com" target="_blank" rel="noopener">
+        <span class="emoji">📝➜🖼️</span><span class="hint">Text2Img</span>
+      </a>
+      <a class="btn" href="https://google.com" target="_blank" rel="noopener">
+        <span class="emoji">🖼️➜📐</span><span class="hint">Upscaling</span>
+      </a>
+      <a class="btn" href="https://google.com" target="_blank" rel="noopener">
+        <span class="emoji">🖼️➜🎨</span><span class="hint">Inpainting</span>
+      </a>
+      <a class="btn" href="https://google.com" target="_blank" rel="noopener">
+        <span class="emoji">🎨➜🖼️</span><span class="hint">Generative Fill</span>
+      </a>
+      <a class="btn" href="https://google.com" target="_blank" rel="noopener">
+        <span class="emoji">🎨➜🖨️</span><span class="hint">Clone Stamping</span>
+      </a>
+      <a class="btn" href="https://google.com" target="_blank" rel="noopener">
+        <span class="emoji">🖼️➜🎬</span><span class="hint">Img2Vid</span>
+      </a>
+      <a class="btn" href="https://google.com" target="_blank" rel="noopener">
+        <span class="emoji">📝➜🎬</span><span class="hint">Text2Vid</span>
+      </a>
+      <a class="btn" href="https://google.com" target="_blank" rel="noopener">
+        <span class="emoji">📸➜🎬</span><span class="hint">Photo2Vid</span>
+      </a>
+      <a class="btn" href="https://google.com" target="_blank" rel="noopener">
+        <span class="emoji">🎬➜🎬</span><span class="hint">Vid2Vid</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
