@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Book an Online Meeting</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<style>
+  :root{ --brand:#0052CC; --mint:#b6e3c1; }
+  body{ font-family:'Lato',sans-serif; font-weight:300; margin:0; padding:2rem; display:flex; flex-direction:column; align-items:center; background:#f9f9f9; color:#000; overflow-x:hidden; }
+  .container{ display:flex; width:100%; max-width:1100px; justify-content:space-between; gap:2rem; }
+  .calendar-column{ flex:2; display:flex; flex-direction:column; gap:1rem; }
+  .card{ background:#fff; border:2px dotted #ccc; border-radius:16px; padding:1.5rem; box-sizing:border-box; }
+  .calendar-container{ flex:1; }
+  .form{ flex:1; display:flex; flex-direction:column; gap:1rem; }
+  h1{ font-weight:900; font-size:1.6rem; color:var(--brand); margin:0 0 .5rem 0; }
+  .hint{ color:#666; font-size:.9rem; }
+
+  /* Radios under the “Pick a date…” section */
+  .radio-grid{ display:grid; grid-template-columns:1fr 1fr; gap:.6rem 1rem; margin-top:0.75rem; }
+  .radio-item{ display:flex; gap:.5rem; align-items:flex-start; }
+
+  /* Inputs */
+  .row{ display:flex; align-items:center; gap:.6rem; }
+  .row label{ min-width:140px; font-weight:900; font-size:.95rem; color:#000; }
+  input[type="email"], input[type="tel"], input[type="text"], select{ flex:1; padding:.65rem .8rem; border:1px solid #ccc; border-radius:10px; font-weight:300; }
+
+  /* Modern scroll-wheel time picker */
+  .wheel{ height:200px; overflow-y:auto; border:1px solid #ddd; border-radius:12px; padding:.25rem; scroll-snap-type:y mandatory; background:#fff; }
+  .slot{ scroll-snap-align:center; padding:.6rem .9rem; margin:.15rem 0; border-radius:999px; border:1px solid #ddd; font-weight:900; text-align:center; cursor:pointer; }
+  .slot.active{ background:var(--brand); color:#fff; border-color:var(--brand); }
+  .slot.disabled{ background:#eee; color:#999; border-color:#e5e5e5; cursor:not-allowed; }
+
+  /* Buttons */
+  .btn{ background:var(--brand); color:#fff; border:none; padding:.8rem 1.3rem; border-radius:999px; font-weight:900; cursor:pointer; }
+  .btn:disabled{ background:#ccc; cursor:not-allowed; }
+
+  /* Calendar visuals */
+  .fc .fc-daygrid-day-number{ font-size:.9em; position:relative; }
+  .unavailable{ display:flex!important; align-items:center; justify-content:center; color:red; font-size:1.2em; font-weight:bold; }
+
+  @media(max-width:900px){ .container{ flex-direction:column; } .row label{ min-width:120px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="calendar-column">
+    <div id="calendar" class="card calendar-container"></div>
+    <div class="card">
+      <h1>Select a Chartership to Meet</h1>
+      <p class="hint">Pick a date on the calendar. Then choose your subject below, select a time on the wheel, and click <strong>Book</strong>. Permanent room links are below on this page.</p>
+
+      <!-- Six radios in 3 rows × 2 columns -->
+      <div id="topicGroup" class="radio-grid">
+        <label class="radio-item"><input type="radio" name="topic" value="lpa"> I want to discuss Local Planning Authority laws with a Planning Consultant.</label>
+        <label class="radio-item"><input type="radio" name="topic" value="hmrc"> I want to discuss HMRC laws with a QS.</label>
+        <label class="radio-item"><input type="radio" name="topic" value="green_finance"> I want to discuss Green Finance with a Finance Adviser.</label>
+        <label class="radio-item"><input type="radio" name="topic" value="neurodiversity_grants"> I want to discuss neurodiversity and disability grant funding with an Architect.</label>
+        <label class="radio-item"><input type="radio" name="topic" value="delivery"> I want to discuss the delivery of The Igloo with a Logistics Manager.</label>
+        <label class="radio-item"><input type="radio" name="topic" value="eps_collection"> I want to discuss collection of EPS with the Recycling Manager.</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="card form">
+    <div class="row"><label>Date</label><input id="dateDisplay" placeholder="Select a date on the calendar" disabled></div>
+
+    <div class="row" style="align-items:flex-start"><label>Time</label>
+      <div id="timeWheel" class="wheel" aria-label="Select a time"></div>
+    </div>
+    <div class="hint">Times shown in your local time. Past times today are greyed out.</div>
+
+    <div class="row"><label>Platform</label>
+      <select id="platform">
+        <option value="">Choose a platform…</option>
+        <option>Zoom</option>
+        <option>Microsoft Teams</option>
+        <option>Meetup</option>
+        <option>Skype</option>
+      </select>
+    </div>
+
+    <div class="row"><label>Email</label><input id="email" type="email" placeholder="your@email.com"></div>
+    <div class="row"><label>Phone</label><input id="phone" type="tel" placeholder="07…"></div>
+    <div class="row"><label>House No./Name</label><input id="house" type="text" placeholder="House number or name"></div>
+    <div class="row"><label>Postcode</label><input id="postcode" type="text" placeholder="YO1 1AA"></div>
+
+    <div class="row" style="justify-content:flex-end"><button id="bookBtn" class="btn" disabled>Book</button></div>
+    <p id="msg" class="hint" style="min-height:1.2em;margin:.25rem 0 0 0"></p>
+  </div>
+</div>
+
+<script>
+  // ===== Config =====
+  const WEBAPP_URL = "YOUR_APPS_SCRIPT_WEBAPP_URL"; // Apps Script endpoint
+
+  // ===== State =====
+  let selectedDateStr = "";          // YYYY-MM-DD
+  let selectedTime = "";             // HH:MM
+  let unavailable = [];               // random 7 dates in next 30 days
+
+  // ===== Utilities =====
+  const pad = n => String(n).padStart(2,'0');
+  const ymd = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  function addDays(d, n){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate()+n); return x; }
+
+  function randomUpcomingUnavailable(count=7, daysAhead=30){
+    const today = new Date();
+    const set = new Set();
+    while (set.size < count){
+      const offset = Math.floor(Math.random() * daysAhead); // 0..29
+      set.add( ymd(addDays(today, offset)) );
+    }
+    return Array.from(set);
+  }
+
+  function buildTimeWheel(forDateStr){
+    const wrap = document.getElementById('timeWheel');
+    wrap.innerHTML = "";
+    selectedTime = "";
+
+    // Working hours: 09:00–17:00, 30-min steps (edit as needed)
+    const startH = 9, endH = 17; 
+    const todayStr = ymd(new Date());
+    const now = new Date();
+    const cutoff = new Date(now.getTime() + 30*60000); // 30 min from now
+
+    for (let h=startH; h<=endH; h++){
+      for (let m of [0,30]){
+        if (h===endH && m>0) continue; // no 17:30
+        const label = `${pad(h)}:${pad(m)}`;
+        const slot = document.createElement('div');
+        slot.className = 'slot';
+        slot.textContent = label;
+        slot.dataset.time = label;
+
+        if (forDateStr === todayStr){
+          const t = new Date(); t.setHours(h, m, 0, 0);
+          if (t < cutoff){ slot.classList.add('disabled'); }
+        }
+
+        slot.onclick = () => {
+          if (slot.classList.contains('disabled')) return;
+          document.querySelectorAll('.slot').forEach(s => s.classList.remove('active'));
+          slot.classList.add('active');
+          selectedTime = slot.dataset.time;
+          checkEnable();
+        };
+        wrap.appendChild(slot);
+      }
+    }
+  }
+
+  function checkEnable(){
+    const ready = selectedDateStr && selectedTime &&
+      document.querySelector('input[name="topic"]:checked') &&
+      document.getElementById('platform').value &&
+      document.getElementById('email').value.trim() &&
+      document.getElementById('phone').value.trim() &&
+      document.getElementById('house').value.trim() &&
+      document.getElementById('postcode').value.trim();
+    document.getElementById('bookBtn').disabled = !ready;
+  }
+
+  function setMsg(t){ document.getElementById('msg').textContent = t; }
+
+  // ===== Calendar =====
+  document.addEventListener('DOMContentLoaded', () => {
+    // Build random 7 crosses in upcoming 30 days
+    unavailable = randomUpcomingUnavailable(7, 30);
+
+    // Calendar defaults to today automatically when initialDate is omitted
+    const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+      initialView: 'dayGridMonth',
+      headerToolbar: { left:'prev,next today', center:'title', right:'' },
+      height: 550,
+      dateClick: function(info){
+        const ds = ymd(info.date);
+        if (unavailable.includes(ds)) return; // blocked
+        selectedDateStr = ds;
+        document.getElementById('dateDisplay').value = ds;
+        document.querySelectorAll('.fc-daygrid-day').forEach(el => el.style.backgroundColor='');
+        info.dayEl.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--mint') || '#b6e3c1';
+        buildTimeWheel(ds);
+        checkEnable();
+      },
+      dayCellDidMount: function(arg){
+        const ds = ymd(arg.date);
+        if (unavailable.includes(ds)){
+          arg.el.innerHTML = '<div class="unavailable">❌</div>';
+        }
+      }
+    });
+    calendar.render();
+
+    // Preselect today + build wheel
+    const todayStr = ymd(new Date());
+    selectedDateStr = todayStr;
+    document.getElementById('dateDisplay').value = todayStr;
+    buildTimeWheel(todayStr);
+
+    // Input listeners
+    ['email','phone','house','postcode','platform'].forEach(id => {
+      document.getElementById(id).addEventListener('input', checkEnable);
+      document.getElementById(id).addEventListener('change', checkEnable);
+    });
+    document.getElementById('topicGroup').addEventListener('change', checkEnable);
+
+    // Book action
+    document.getElementById('bookBtn').onclick = async function(){
+      const topicEl = document.querySelector('input[name="topic"]:checked');
+      const payload = {
+        date: selectedDateStr,
+        time: selectedTime,
+        topic: topicEl ? topicEl.value : '',
+        platform: document.getElementById('platform').value,
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        house: document.getElementById('house').value.trim(),
+        postcode: document.getElementById('postcode').value.trim(),
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        ua: navigator.userAgent
+      };
+      this.disabled = true; setMsg('Saving…');
+      try{
+        const res = await fetch(WEBAPP_URL, { method:'POST', body: JSON.stringify(payload) });
+        await res.text();
+        setMsg('Looking forward to seeing you. You will not be emailed a link just click one below.');
+      }catch(e){
+        console.error(e);
+        setMsg('Sorry — something went wrong saving your booking.');
+      }finally{
+        this.disabled = false;
+      }
+    };
+  });
+</script>
+</body>
+</html>
