@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extra Small Winter Igloo '25</title>
+    
+    <meta name="description" content="Winter Igloo 2025 (B8) — ultra-insulated garden office pod. 7.5 m² internal floor area, U-value 0.18 W/m²K, price £2800 installed.">
+    <meta name="keywords" content="garden office, garden room, garden studio, garden office pod, Winter Igloo '25">
+
+    <style>
+        /* Import Lato Light (100, 300) and Bold (700) for emphasis */
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
+
+        :root {
+            /* Animation timings */
+            --delay-start: 1500ms; 
+            --anim-speed: 0.6s;
+            --stagger: 0.1s;
+            --ice-blue: #00d2ff; /* New accent color for widget */
+            --brand-blue: #0052CC; /* New specific brand color */
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: transparent !important; 
+            overflow: hidden; 
+            font-family: 'Lato', sans-serif;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- EXISTING IGLOO STYLES --- */
+
+        .igloo-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Default Right Alignment */
+            justify-content: center;
+            padding: 20px 40px;
+            box-sizing: border-box;
+            opacity: 0; 
+            visibility: hidden;
+            transition: opacity 0.1s ease;
+        }
+
+        .igloo-container.is-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* --- NEW PRE-ORDER PILL (LINK) --- */
+        .pre-order-pill {
+            background-color: var(--brand-blue);
+            color: #ffffff;
+            padding: 12px 25px;
+            border-radius: 50px; /* Pill shape */
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0, 82, 204, 0.3);
+            text-decoration: none; /* Removes underline from link */
+            
+            /* Position Absolute to stick to Bottom Left */
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            margin: 0;
+
+            /* Animation initial state */
+            opacity: 0;
+            transform: translateX(-50px); /* Start slightly off-left */
+            transition: transform 0.2s, box-shadow 0.2s; /* Hover effects */
+        }
+
+        .pre-order-pill:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 82, 204, 0.5);
+        }
+
+        .text-outline {
+            color: #ffffff;
+            text-shadow: 
+                3px 3px 0px rgba(0,0,0,1),
+                -1px -1px 0 #000,  
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000;
+            text-transform: uppercase;
+            line-height: 0.9;
+            margin: 0;
+        }
+
+        .title-group {
+            text-align: right;
+            margin-bottom: 15px;
+            transform: translateX(100px);
+            opacity: 0;
+        }
+
+        .main-title {
+            font-weight: 900;
+            font-size: 3.5rem;
+            letter-spacing: -2px;
+            display: block;
+        }
+
+        .sub-title {
+            font-weight: 300;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            display: block;
+            color: #f0f0f0;
+        }
+
+        .stats-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-bottom: 20px;
+            transform: translateX(100px);
+            opacity: 0;
+        }
+
+        .price-tag {
+            font-size: 5rem;
+            font-weight: 100;
+            color: #fff;
+            position: relative;
+        }
+        
+        .price-sub {
+            font-size: 1rem;
+            font-weight: 700;
+            background: #000;
+            color: #fff;
+            padding: 2px 8px;
+            text-shadow: none;
+            position: absolute;
+            top: 10px;
+            right: -10px;
+            transform: rotate(15deg);
+        }
+
+        .weight-tag {
+            font-size: 2rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .dims-tag {
+            font-size: 0.9rem;
+            font-weight: 400;
+            background: rgba(0,0,0,0.8);
+            padding: 4px 8px;
+            text-shadow: none;
+            margin-top: 5px;
+        }
+
+        .specs-list {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            transform: translateX(50px);
+            opacity: 0;
+            background: linear-gradient(to left, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            padding: 2px 10px 2px 30px;
+        }
+
+        .spec-emoji {
+            font-size: 1.6rem;
+            margin-left: 10px;
+            order: 2;
+            filter: drop-shadow(2px 2px 0px rgba(0,0,0,1));
+        }
+
+        .spec-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 2px 2px 0px #000;
+            order: 1; 
+        }
+
+        /* --- NEW WIDGET CSS (NOW TOP LEFT) --- */
+        .activity-widget {
+            position: fixed;
+            top: 20px; /* Switched from bottom */
+            left: 20px; 
+            background: rgba(0, 0, 0, 0.85); /* Dark background to match theme */
+            border-left: 3px solid var(--ice-blue); /* Ice Blue accent */
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 9999;
+            transform: translateY(0);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s;
+            max-width: 280px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.5); /* Hard shadow to match theme */
+        }
+
+        .activity-widget.hidden {
+            transform: translateY(-100px); /* Switched to slide UP */
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .activity-icon {
+            color: var(--ice-blue);
+            display: flex;
+        }
+
+        .activity-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #activity-text {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        #activity-time {
+            font-size: 10px;
+            color: #bbb;
+            margin-top: 3px;
+            font-weight: 300;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #666;
+            cursor: pointer;
+            margin-left: auto;
+            padding: 0 5px;
+        }
+        .close-btn:hover { color: #fff; }
+
+        /* --- ANIMATIONS --- */
+        .is-visible .pre-order-pill {
+            /* Reusing slideInImpact to slide in from left to center-ish */
+            animation: slideInImpact 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation-delay: 1.2s; /* Delays until after list appears */
+        }
+
+        .is-visible .title-group {
+            animation: slideInImpact 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation-delay: 0.1s;
+        }
+
+        .is-visible .stats-grid {
+            animation: slideInImpact 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation-delay: 0.3s;
+        }
+
+        .is-visible .spec-item {
+            animation: snapIn 0.4s ease-out forwards;
+        }
+
+        .is-visible .spec-item:nth-child(1) { animation-delay: 0.5s; }
+        .is-visible .spec-item:nth-child(2) { animation-delay: 0.6s; }
+        .is-visible .spec-item:nth-child(3) { animation-delay: 0.7s; }
+        .is-visible .spec-item:nth-child(4) { animation-delay: 0.8s; }
+        .is-visible .spec-item:nth-child(5) { animation-delay: 0.9s; }
+        .is-visible .spec-item:nth-child(6) { animation-delay: 1.0s; }
+        .is-visible .spec-item:nth-child(7) { animation-delay: 1.1s; }
+
+        @keyframes slideInImpact {
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes snapIn {
+            0% { transform: translateX(50px) scale(0.8); opacity: 0; }
+            80% { transform: translateX(-5px) scale(1.05); opacity: 1; }
+            100% { transform: translateX(0) scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            .main-title { font-size: 2.5rem; }
+            .price-tag { font-size: 3.5rem; }
+            .igloo-container { padding: 10px 15px; }
+            .activity-widget { top: 10px; left: 10px; max-width: 250px; }
+            .pre-order-pill { font-size: 0.9rem; padding: 10px 20px; bottom: 20px; left: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="igloo-container" id="iglooApp">
+        
+        <div class="title-group text-outline">
+            <span class="main-title">WINTER IGLOO '25</span>
+            <span class="sub-title">EXTRA SMALL (B8)</span>
+        </div>
+
+        <div class="stats-grid text-outline">
+            <div class="price-tag">
+                £2800
+                <span class="price-sub">INSTALLED</span>
+            </div>
+            <div class="weight-tag">336kg MASS</div>
+            <div class="dims-tag">H 3.2m × L 2.7m × W 2.4m × T 0.2m</div>
+        </div>
+
+        <div class="specs-list">
+            <div class="spec-item"><span class="spec-text">7.5 m²</span><span class="spec-emoji">📏</span></div>
+            <div class="spec-item"><span class="spec-text">0.18 W/m²K</span><span class="spec-emoji">🧊</span></div>
+            <div class="spec-item"><span class="spec-text">+8°C Uplift</span><span class="spec-emoji">🌡️</span></div>
+            <div class="spec-item"><span class="spec-text">£372/m²</span><span class="spec-emoji">💷</span></div>
+            <div class="spec-item"><span class="spec-text">0.7t CO₂e</span><span class="spec-emoji">🌍</span></div>
+            <div class="spec-item"><span class="spec-text">80 mph</span><span class="spec-emoji">💨</span></div>
+            <div class="spec-item"><span class="spec-text">575 kg Snow</span><span class="spec-emoji">❄️</span></div>
+        </div>
+
+        <a href="https://www.readytobuild.co.uk/the-winter-igloo-2025" class="pre-order-pill">
+            £100 Pre-Order for Winter
+        </a>
+    </div>
+
+    <div id="activity-widget" class="activity-widget hidden">
+        <div class="activity-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="activity-content">
+            <span id="activity-text">Verifying Specs...</span>
+            <small id="activity-time">Live System</small>
+        </div>
+        <button onclick="closeWidget()" class="close-btn">&times;</button>
+    </div>
+
+    <script>
+        // --- 1. WIDGET LOGIC ---
+        // Messages tailored to High-Ticket Garden Rooms (Legal/Operational updates)
+        const messages = [
+            "Current Registered Pre-Orders = 12",
+            "Current Expressions of Interest 39",
+            "Currently 19.5T of XPS Produced",
+            "Weather Testing Prototypes Leak Free for 728 days",
+            "Take Advantage of Promotional Pro-Bono Service",
+            "High Interest"
+        ];
+
+        const widget = document.getElementById('activity-widget');
+        const textEl = document.getElementById('activity-text');
+
+        function closeWidget() {
+            widget.style.display = 'none';
+        }
+
+        function showNotification() {
+            const message = messages[Math.floor(Math.random() * messages.length)];
+            textEl.innerText = message;
+            widget.classList.remove('hidden');
+            
+            // Hide after 6 seconds
+            setTimeout(() => {
+                widget.classList.add('hidden');
+            }, 6000);
+        }
+
+        // Function to start the loop
+        function startWidgetLoop() {
+            // Show first message quickly
+            setTimeout(showNotification, 1000);
+            // Then repeat every 20 seconds
+            setInterval(showNotification, 20000);
+        }
+
+        // --- 2. MAIN APP & SCROLL LOGIC ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById('iglooApp');
+            const delayTime = 1500; 
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 1. Trigger Main Animation
+                        setTimeout(() => {
+                            container.classList.add('is-visible');
+                        }, delayTime);
+
+                        // 2. Trigger Widget Loop (Wait 3s so it doesn't compete with the main title)
+                        setTimeout(() => {
+                            startWidgetLoop();
+                        }, 3000);
+                        
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1 
+            });
+
+            observer.observe(container);
+        });
+    </script>
+</body>
+</html>
